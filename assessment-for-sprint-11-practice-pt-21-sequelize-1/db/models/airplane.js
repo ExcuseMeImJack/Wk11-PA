@@ -19,12 +19,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
         validate: {
-          foo(value) {
-            let res = value.toUpperCase()
-            if(value.length !== 2 || value !== res){
-              throw new Error("wrong airlineCode")
-            }
-          }
+          // foo(value) {
+          //   let res = value.toUpperCase()
+          //   if(value.length !== 2 || value !== res){
+          //     throw new Error("wrong airlineCode")
+          //   }
+          // }
+          isUppercase: true,
+          len: [2,2]
         }
       },
       flightNumber: {
@@ -45,7 +47,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.INTEGER,
         validate: {
-          min: 1
+          min: 2,
+          max: 853
         }
       },
       currentNumPassengers: {
@@ -65,7 +68,13 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
-      firstFlightDate: DataTypes.DATE,
+      firstFlightDate: {
+       type: DataTypes.DATE,
+       validate: {
+         isAfter: '2019-12-31',
+         isBefore: '2022-01-01'
+       }
+      }
     },
     {
       sequelize,

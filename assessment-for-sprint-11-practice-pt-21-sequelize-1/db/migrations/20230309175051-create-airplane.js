@@ -14,6 +14,7 @@ module.exports = {
       },
       flightNumber: {
         allowNull: false,
+        unique: true,
         type: Sequelize.INTEGER
       },
       inService: {
