@@ -9,16 +9,22 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       airlineCode: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       flightNumber: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       inService: {
+        allowNull: false,
+        defaultValue: true,
         type: Sequelize.BOOLEAN
       },
       maxNumPassengers: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
+
       },
       currentNumPassengers: {
         type: Sequelize.INTEGER
@@ -28,11 +34,13 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       }
     });
   },

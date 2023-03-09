@@ -20,14 +20,17 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       flightNumber: {
+        allowNull: false,
         type: DataTypes.INTEGER,
         unique: true,
       },
       inService: {
+        allowNull: false,
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
       maxNumPassengers: {
+        allowNull: false,
         type: DataTypes.INTEGER,
         // validate: {
         //   min: .
@@ -36,7 +39,13 @@ module.exports = (sequelize, DataTypes) => {
       currentNumPassengers: {
         type: DataTypes.INTEGER,
         validate: {
-          [Op.lte]: this.maxNumPassengers
+          // [Op.lte]: this.maxNumPassengers,
+          min: 0,
+          numPassChecker(value){
+            if(value !== null && this.inService === false){
+              throw new Error('flight must be in service');
+            }
+          }
         }
       },
       firstFlightDate: DataTypes.DATE,
