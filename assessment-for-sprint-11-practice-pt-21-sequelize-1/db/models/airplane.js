@@ -18,11 +18,23 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          foo(value) {
+            let res = value.toUpperCase()
+            if(value.length !== 2 || value !== res){
+              throw new Error("wrong airlineCode")
+            }
+          }
+        }
       },
       flightNumber: {
         allowNull: false,
         type: DataTypes.INTEGER,
         unique: true,
+        validate: {
+          len:[1,4],
+          isNumeric: true
+        }
       },
       inService: {
         allowNull: false,
@@ -32,14 +44,19 @@ module.exports = (sequelize, DataTypes) => {
       maxNumPassengers: {
         allowNull: false,
         type: DataTypes.INTEGER,
-        // validate: {
-        //   min: .
-        // }
+        validate: {
+          min: 1
+        }
       },
       currentNumPassengers: {
         type: DataTypes.INTEGER,
         validate: {
           // [Op.lte]: this.maxNumPassengers,
+          maxNumPassCheck(value){
+            if(value > this.maxNumPassengers) {
+              throw new Error("Too many passengers")
+            }
+          },
           min: 0,
           numPassChecker(value){
             if(value !== null && this.inService === false){
