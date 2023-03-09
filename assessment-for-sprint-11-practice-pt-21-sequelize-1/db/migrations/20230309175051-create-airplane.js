@@ -1,4 +1,7 @@
 'use strict';
+
+const { airlineCode } = require("../../test/data/airplane-values");
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Airplanes', {
@@ -14,7 +17,6 @@ module.exports = {
       },
       flightNumber: {
         allowNull: false,
-        unique: true,
         type: Sequelize.INTEGER
       },
       inService: {
@@ -44,8 +46,13 @@ module.exports = {
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
       }
     });
+    await queryInterface.addIndex('Airplanes',
+     {fields: ['airlineCode', 'flightNumber'], 
+      unique: true
+    })
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Airplanes');
+    await queryInterface.removeIndex("Airplanes", ['airlineCode', 'flightNumber'])
   }
 };
